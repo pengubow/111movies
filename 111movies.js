@@ -4,24 +4,21 @@ const BASE_URL = "https://111movies.net";
 const USER_AGENT =
 "Mozilla/5.0 (X11; Linux x86_64; rv:137.0) Gecko/20100101 Firefox/137.0";
 
-const AES_KEY = Buffer.from("8e0a656f1465c1cec75fc96382ad5187c1e49d10622fc7d3d1a381a31b067cbf", "hex");
-const AES_IV = Buffer.from("3f096e5a9f1d9aa3faccd8c6b53b5105", "hex");
+const AES_KEY = Buffer.from("a3e16d447e2a0b30c95f6512df00e950da00a8a277c823ca3b0ae5f488e61ff2", "hex");
+const AES_IV = Buffer.from("578d2b209e3a50282b38c5aff8e7cd6b", "hex");
 
-const XOR_KEY = [145, 74, 235, 169, 194, 195, 242, 217, 154, 89];
+const XOR_KEY = [76, 57, 114];
 
 const STANDARD_ALPHABET =
 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
 const SCRAMBLED_ALPHABET =
-"oz-B7ntbyYZe59mDp08cQHGJ4KrXAWM21Rv_kiw6IfPCVhOTU3LxSENuFjlgasdq";
+"pz0Yf8PTnJMqNoZBIKvQ4l-drHme5FRcSjsh96bixGuVDO_g7UWLt2X1ky3awAEC";
 
 const API_PATH =
-"APA91FFrHH9czauBQ7NGlLSaKGUwgel4KM6D27PLT4kT5zVkUW33QqeWh5aMj3O0he1cnoUSzXsLQCCMqEfLqGu8AZQICEM2DyLrkC9mJsHEp8k_uXDPqAHWAlNHtLq4CcbkS2KHmCOc7c4uPlzg4yICXfmBrWQsj6T3q840fQClpPv9HspuKln";
-
-const CSRF_TOKEN = "Ia5a6GaILGefI2vZL9Sr7WnroH6tPszr";
+"ae34987f-a0ef-5432-a0c8-b1942f3bb71e/c63e9283a24e58fa9071909ebc11f0f7b7263137a384604a4b7f24812df68c8e/ot/84caf06d/ozi";
 
 const DEFAULT_HEADERS = {
-  "Content-Type": "application/xml",
-  "X-Csrf-Token": CSRF_TOKEN,
+  "Content-Type": "application/atom+xml",
   "Content-Length": "0",
 };
 
@@ -138,7 +135,7 @@ async function fetchPageProps(tmdbId, season, episode) {
 
 async function fetchSources(token) {
   const url = `${BASE_URL}/${API_PATH}/${token}/sr`;
-
+  console.log(url)
   const res = await request(url, {
     method: "POST",
     headers: DEFAULT_HEADERS,
