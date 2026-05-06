@@ -4,34 +4,49 @@ const BASE_URL = "https://111movies.net";
 const USER_AGENT =
 "Mozilla/5.0 (X11; Linux x86_64; rv:137.0) Gecko/20100101 Firefox/137.0";
 
-const AES_KEY = Buffer.from("a3e16d447e2a0b30c95f6512df00e950da00a8a277c823ca3b0ae5f488e61ff2", "hex");
-const AES_IV = Buffer.from("578d2b209e3a50282b38c5aff8e7cd6b", "hex");
+const AES_KEY = Buffer.from("0cbf270e362559a6b0156c585c6e4859e027088a0ee9783c9090be69f83efd69", "hex");
+const AES_IV = Buffer.from("41ef6f03ca39554c333a3751b2bb897c", "hex");
 
-const XOR_KEY = [76, 57, 114];
+const XOR_KEY = [23, 149, 0, 154, 108, 28];
 
 const STANDARD_ALPHABET =
 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
 const SCRAMBLED_ALPHABET =
-"pz0Yf8PTnJMqNoZBIKvQ4l-drHme5FRcSjsh96bixGuVDO_g7UWLt2X1ky3awAEC";
+"xfavGsqYOk-5eBHzcPbAl9oCdVFUWZ3hK0pXnELMuN6_7It8RTJrS2Q1mDgy4jwi";
 
 const API_PATH =
-"ae34987f-a0ef-5432-a0c8-b1942f3bb71e/c63e9283a24e58fa9071909ebc11f0f7b7263137a384604a4b7f24812df68c8e/ot/84caf06d/ozi";
+"2614ef35aed3876b8cdc877016531d600925b4a4dd1743283e8aa65d1f2a67c6/90c8c08373656c591612a24f1c8fcb30f8e8b381/APA91rPDnb4k_bzLSf3MoNtiZft9iSa54NM1rOy8gwCRZ6hw4F2ZkWJ9HAvPhI9a2NX8IXsqYslS7pw9iKHApzkjfXpMF0h_FwVfevr3Ob-jvGAO44BkX9p3h6EzoMuWzbeJgBxRwHuJITkofeMzWmZtbuiGqsf1kzeZe_zwJRPLpKu0eokKmnA/f434eec5-6551-5111-8e3c-4b55838ec7e6/1000053806606523/dipdil/ve";
+
+const REQUEST_METHOD = "GET";
 
 const DEFAULT_HEADERS = {
-  "Content-Type": "application/atom+xml",
-  "Content-Length": "0",
+  "Content-Type": "application/x-font-ttf",
+  "X-Csrf-Token": "eNf8Hb10Ir8kSBsWn2qNm964r6dzkM5u",
 };
 
+function requestHeaders(method) {
+  const headers = { ...DEFAULT_HEADERS };
+  if (method !== "GET" && method !== "HEAD") {
+    headers["Content-Length"] = "0";
+  }
+  return headers;
+}
+
 async function request(url, options = {}) {
+  const headers = {
+    "User-Agent": USER_AGENT,
+    Accept: "*/*",
+    Referer: BASE_URL + "/",
+    ...options.headers,
+  };
+
+  if (options.origin !== false) {
+    headers.Origin = BASE_URL;
+  }
+
   const res = await fetch(url, {
     method: options.method || "GET",
-    headers: {
-      "User-Agent": USER_AGENT,
-      Accept: "*/*",
-      Referer: BASE_URL + "/",
-      Origin: BASE_URL,
-      ...options.headers,
-    },
+    headers,
     body: options.body,
     redirect: "follow",
   });
@@ -135,10 +150,9 @@ async function fetchPageProps(tmdbId, season, episode) {
 
 async function fetchSources(token) {
   const url = `${BASE_URL}/${API_PATH}/${token}/sr`;
-  console.log(url)
   const res = await request(url, {
-    method: "POST",
-    headers: DEFAULT_HEADERS,
+    method: REQUEST_METHOD,
+    headers: requestHeaders(REQUEST_METHOD),
   });
 
   if (!res.ok) {
@@ -161,8 +175,8 @@ async function resolveFirstWorkingStream(sources) {
     const url = `${BASE_URL}/${API_PATH}/${source.data}`;
 
     const res = await request(url, {
-      method: "POST",
-      headers: DEFAULT_HEADERS,
+      method: REQUEST_METHOD,
+      headers: requestHeaders(REQUEST_METHOD),
     });
 
     if (!res.ok) {
@@ -187,6 +201,27 @@ async function resolveFirstWorkingStream(sources) {
   return null;
 }
 
+async function fetchWyzieSubtitles(tmdbId, season, episode) {
+  const params = new URLSearchParams({ id: tmdbId });
+  if (season && episode) {
+    params.set("season", season);
+    params.set("episode", episode);
+  }
+
+  const res = await request(`${BASE_URL}/wyzie?${params}`, {
+    origin: false,
+    headers: {
+      Accept: "*/*",
+      "Accept-Language": "en-US,en;q=0.9",
+    },
+  });
+
+  if (!res.ok) return [];
+
+  const subtitles = res.json();
+  return Array.isArray(subtitles) ? subtitles : [];
+}
+
 async function main() {
   const args = process.argv.slice(2);
 
@@ -195,7 +230,7 @@ async function main() {
   const episode = args[2];
 
   if (!tmdbId) {
-    console.log("Usage: node script.js <tmdb_id> [season] [episode]");
+    console.log("Usage: node 111movies.js <tmdb_id> [season] [episode]");
     process.exit(1);
   }
 
@@ -223,6 +258,12 @@ async function main() {
 
   console.log(`Working source: ${result.sourceName}`);
   console.log(`m3u8 url: ${result.stream.url}`);
+
+  const subtitles = await fetchWyzieSubtitles(tmdbId, season, episode);
+  console.log(`Wyzie subtitles: ${subtitles.length}`);
+  for (const subtitle of subtitles) {
+    console.log(`${subtitle.language || "?"} ${subtitle.display || ""}: ${subtitle.url || ""}`);
+  }
 }
 
 main().catch((err) => {
