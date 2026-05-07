@@ -4,24 +4,24 @@ const BASE_URL = "https://111movies.net";
 const USER_AGENT =
 "Mozilla/5.0 (X11; Linux x86_64; rv:137.0) Gecko/20100101 Firefox/137.0";
 
-const AES_KEY = Buffer.from("0cbf270e362559a6b0156c585c6e4859e027088a0ee9783c9090be69f83efd69", "hex");
-const AES_IV = Buffer.from("41ef6f03ca39554c333a3751b2bb897c", "hex");
+const AES_KEY = Buffer.from("75745e6c15fb316b25b34af455421c257c959ba6634cacfbaec0bae019c9a31c", "hex");
+const AES_IV = Buffer.from("e26e7bf4549e9d99b169cf740a746e76", "hex");
 
-const XOR_KEY = [23, 149, 0, 154, 108, 28];
+const XOR_KEY = [31, 53, 243, 172, 244, 229, 114, 181];
 
 const STANDARD_ALPHABET =
 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
 const SCRAMBLED_ALPHABET =
-"xfavGsqYOk-5eBHzcPbAl9oCdVFUWZ3hK0pXnELMuN6_7It8RTJrS2Q1mDgy4jwi";
+"y5OnTckzKWGjIxS608up4F7BYVhimEZJ_NvldPfA9Ha-orQtsMwDUbqgCe3X1RL2";
 
 const API_PATH =
-"2614ef35aed3876b8cdc877016531d600925b4a4dd1743283e8aa65d1f2a67c6/90c8c08373656c591612a24f1c8fcb30f8e8b381/APA91rPDnb4k_bzLSf3MoNtiZft9iSa54NM1rOy8gwCRZ6hw4F2ZkWJ9HAvPhI9a2NX8IXsqYslS7pw9iKHApzkjfXpMF0h_FwVfevr3Ob-jvGAO44BkX9p3h6EzoMuWzbeJgBxRwHuJITkofeMzWmZtbuiGqsf1kzeZe_zwJRPLpKu0eokKmnA/f434eec5-6551-5111-8e3c-4b55838ec7e6/1000053806606523/dipdil/ve";
+"APA91jIfiZxbFSzcMb2OmfKntpKPy-TQaw46YgiAUfMTO7qIqMPlsvMwYuyxK2MI2l1hlKXncY0YH8bjExtDSa5sg66tqDmP_csCi5B8-575ILXaYz2AeBtgZ7IknLrJwDKxI9OcHUaNXeJTSiugID-0polApBR10PQyX_-4GcuZwv9Sz4pLM9Y/w/1000074138859700/e200457c-4bce-5aa6-a15c-b6d8ab4b7d6c/aloom/7311467556049960822d8991a31d99836652ed0b13eb80175bf8cea462f89666";
 
 const REQUEST_METHOD = "GET";
 
 const DEFAULT_HEADERS = {
-  "Content-Type": "application/x-font-ttf",
-  "X-Csrf-Token": "eNf8Hb10Ir8kSBsWn2qNm964r6dzkM5u",
+  "Content-Type": "application/pdf",
+  "X-Requested-With": "XMLHttpRequest",
 };
 
 function requestHeaders(method) {
