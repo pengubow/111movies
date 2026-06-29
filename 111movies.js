@@ -4,24 +4,23 @@ const BASE_URL = "https://111movies.net";
 const USER_AGENT =
 "Mozilla/5.0 (X11; Linux x86_64; rv:137.0) Gecko/20100101 Firefox/137.0";
 
-const AES_KEY = Buffer.from("06fbac19800e50d932c36c1f5997d1be339adef245117fd5f7534f5df3a2f438", "hex");
-const AES_IV = Buffer.from("ed4838d57dad42a02958db96442337a5", "hex");
+const AES_KEY = Buffer.from("de4493816f1057a0bbbf292e01f596a63e86e49cc738fe53b7a8544630cd54cb", "hex");
+const AES_IV = Buffer.from("79ac16055f50ae0b7d2f2603d630516b", "hex");
 
-const XOR_KEY = [29, 247, 99, 169, 140, 246, 197, 79, 230, 202];
+const XOR_KEY = [33, 22, 251, 144, 223, 136, 190];
 
 const STANDARD_ALPHABET =
 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
 const SCRAMBLED_ALPHABET =
-"rNlqQzPjG6kw1aCTZgYsHKIS8myAEWbcvhnLiFp-t5uB_OV4foeDx9X0R3UJ72dM";
+"L-M82VJ0d6Y_O51xrjg9NGSAQsW3EaK7pTbIouhtXlymFPBURkzwecDviCHZfn4q";
 
 const API_PATH =
-"5fa027b95f753a9d9e20ed194bd1eec4f87a2976/3bba5201/acitoj/1000069658203559/APA91fttrAUcjNQDvYD5RGG8CGDOvSkYpLRf3PE8tQg1o8uB1YAcNQzyhG0cM44LHUmKVo1nNNil3KPhuP5DsMXMpn4oj8hVQV2SaP3M9hU8oXo0Q0jDHRWZKJ9H4fBwVrsqzl6QUXB0UxtV_MKqwK7wv0Cx3usBmcfjUajAoHI7gRQ_P8Vhot4";
+"1000035807992697/ti/dad/54a89291-3404-58f7-98ab-a0be9a4e83ad/a4ac28a68a00237a5e80e65912167989c7627e0f15f9e666a0c87494a6cd40fc/7610007d12b1e8149390c636be4edd2d68a14725/5b5f1b09/w";
 
 const REQUEST_METHOD = "GET";
 
 const DEFAULT_HEADERS = {
-  "Content-Type": "application/xml",
-  "X-Csrf-Token": "vnTyKs9w9Tv5MdBwj88MKnAK4VFCbefK"
+  "Content-Type": "text/css"
 };
 
 function requestHeaders(method) {
